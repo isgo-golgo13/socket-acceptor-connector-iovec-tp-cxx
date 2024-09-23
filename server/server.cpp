@@ -10,9 +10,11 @@ constexpr int BUFFER_SIZE = 1024;
 constexpr size_t THREAD_POOL_SIZE = 4;
 
 void handleSession(int clientSocket, SocketAcceptor& acceptor) {
+    
     char buffer[BUFFER_SIZE];
     acceptor.recvData(clientSocket, buffer, sizeof(buffer));
     std::cout << "Received data: " << buffer << std::endl;
+
     close(clientSocket);
 }
 

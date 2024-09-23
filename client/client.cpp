@@ -11,21 +11,21 @@ constexpr int PORT = 8080;
 int main() {
     // Prepare iovec structs
     std::vector<std::shared_ptr<struct iovec>> iovecs;
-    const char* message1 = "Message Part 1\n";
-    const char* message2 = "Message Part 2\n";
-    const char* message3 = "Message Part 3\n";
+    const char* payload1 = "Payload Part 1\n";
+    const char* payload2 = "Payload Part 2\n";
+    const char* payload3 = "Payload Part 3\n";
 
     for (int i = 0; i < SESSION_COUNT; i++) {
         auto iov = std::make_shared<struct iovec>();
         if (i % 3 == 0) {
-            iov->iov_base = (void*)message1;
-            iov->iov_len = strlen(message1);
+            iov->iov_base = (void*)payload1;
+            iov->iov_len = strlen(payload1);
         } else if (i % 3 == 1) {
-            iov->iov_base = (void*)message2;
-            iov->iov_len = strlen(message2);
+            iov->iov_base = (void*)payload2;
+            iov->iov_len = strlen(payload2);
         } else {
-            iov->iov_base = (void*)message3;
-            iov->iov_len = strlen(message3);
+            iov->iov_base = (void*)payload3;
+            iov->iov_len = strlen(payload3);
         }
         iovecs.push_back(iov);
     }
@@ -36,8 +36,7 @@ int main() {
     connector.connect();
 
     // Send data with sendv
-    connector.socket_->iovec_vector_ = iovecs;
-    connector.sendDataVec();
+    connector.sendDataVec(iovecs);
 
     return 0;
 }

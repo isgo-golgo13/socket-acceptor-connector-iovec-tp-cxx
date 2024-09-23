@@ -23,10 +23,22 @@ void SocketConnector::connect() {
     }
 }
 
+std::unique_ptr<Socket> SocketConnector::getSocket() {
+    return std::move(socket_);
+}
+
+
 void SocketConnector::sendData(const void* buffer, size_t length) {
     socket_->send(clientSocket_, buffer, length);
 }
 
-void SocketConnector::sendDataVec() {
-    socket_->sendv(clientSocket_, socket_->iovec_vector_.data(), socket_->iovec_vector_.size());
+void SocketConnector::sendDataVec(std::vector<std::shared_ptr<struct iovec>>& iovec_vector) {
+    // Create a raw iovec array from the shared_ptr vector
+    std::vector<struct iovec> raw_iovecs;
+    for (const auto& iov : iovec_vector) {
+        raw_iovecs.push_back(*iov);  // Dereference the shared_ptr to get the iovec
+    }
+
+    // Call the Socket::sendv method with the raw iovec array
+    socket_->sendv(clientSocket_, raw_iovecs.data(), raw_iovecs.size());
 }

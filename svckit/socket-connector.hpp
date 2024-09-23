@@ -15,8 +15,9 @@ public:
     ~SocketConnector() = default;
 
     void connect();
+    std::unique_ptr<Socket> getSocket();
     void sendData(const void* buffer, size_t length);
-    void sendDataVec();
+    void sendDataVec(std::vector<std::shared_ptr<struct iovec>>& iovec_vector);
 
 private:
     int clientSocket_;
