@@ -157,3 +157,12 @@ ssize_t Socket::recv_vec(int fd, struct iovec* vector_buf, int n, std::chrono::m
     }
     return -1;
 }
+
+// Accessor for iovec_vector_
+std::vector<std::shared_ptr<struct iovec>>& Socket::get_iovec_vector() {
+    return iovec_vector_;
+}
+
+const std::vector<std::shared_ptr<struct iovec>>& Socket::get_iovec_vector() const {
+    return iovec_vector_;
+}

@@ -35,10 +35,13 @@ public:
     ssize_t recv_vec(int fd, struct iovec* vector_buf, int n);
     ssize_t recv_vec(int fd, struct iovec* vector_buf, int n, std::chrono::milliseconds timeout);
 
-    // A vector of shared pointers to iovec
-    std::vector<std::shared_ptr<struct iovec>> iovec_vector_;
+    // Public accessor for iovec vector
+    std::vector<std::shared_ptr<struct iovec>>& get_iovec_vector();
+    const std::vector<std::shared_ptr<struct iovec>>& get_iovec_vector() const;
 
-
+    
 private:
     int socket_fd_;
+    // A vector of shared pointers to iovec
+    std::vector<std::shared_ptr<struct iovec>> iovec_vector_;
 };
