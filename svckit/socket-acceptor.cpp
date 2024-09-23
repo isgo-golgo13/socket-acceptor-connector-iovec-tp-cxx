@@ -41,10 +41,10 @@ int SocketAcceptor::acceptConnection() {
     return clientSocket;
 }
 
-void SocketAcceptor::sendData(int clientSocket, const void* buffer, size_t length) {
-    socket_->send(clientSocket, buffer, length);
+void SocketAcceptor::sendData(int clientSocket, const std::vector<char>& buffer) {
+    socket_->send(clientSocket, buffer);
 }
 
-void SocketAcceptor::recvData(int clientSocket, void* buffer, size_t length) {
-    socket_->recv(clientSocket, buffer, length);
+void SocketAcceptor::recvData(int clientSocket, std::vector<char>& buffer) {
+    socket_->recv(clientSocket, buffer);
 }

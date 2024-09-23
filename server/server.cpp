@@ -2,18 +2,18 @@
 #include "socket-addr.hpp"
 #include "thread-pool.hpp"
 #include <iostream>
-#include <cstring>
 #include <unistd.h>
+#include <vector>
+#include <string>
 
 constexpr int PORT = 8080;
 constexpr int BUFFER_SIZE = 1024;
 constexpr size_t THREAD_POOL_SIZE = 4;
 
 void handleSession(int clientSocket, SocketAcceptor& acceptor) {
-    
-    char buffer[BUFFER_SIZE];
-    acceptor.recvData(clientSocket, buffer, sizeof(buffer));
-    std::cout << "Received data: " << buffer << std::endl;
+    std::vector<char> buffer(BUFFER_SIZE);
+    acceptor.recvData(clientSocket, buffer);
+    std::cout << "Received data: " << std::string(buffer.data(), buffer.size()) << std::endl;
 
     close(clientSocket);
 }

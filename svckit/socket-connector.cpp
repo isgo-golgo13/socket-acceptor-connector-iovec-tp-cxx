@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 
+
 SocketConnector::SocketConnector(const SocketAddr& addr) : serverAddr_(addr), clientSocket_(socket(AF_INET, SOCK_STREAM, 0)) {
     if (clientSocket_ == -1) {
         std::cerr << "Socket creation failed!" << std::endl;
@@ -27,8 +28,8 @@ std::unique_ptr<Socket> SocketConnector::getSocket() {
     return std::move(socket_);
 }
 
-void SocketConnector::sendData(const void* buffer, size_t length) {
-    socket_->send(clientSocket_, buffer, length);
+void SocketConnector::sendData(const std::vector<char>& buffer) {
+    socket_->send(clientSocket_, buffer);
 }
 
 void SocketConnector::sendDataVec(std::vector<std::shared_ptr<struct iovec>>& iovec_vector) {
@@ -41,3 +42,4 @@ void SocketConnector::sendDataVec(std::vector<std::shared_ptr<struct iovec>>& io
     // Call the Socket::sendv method with the raw iovec array
     socket_->sendv(clientSocket_, raw_iovecs.data(), raw_iovecs.size());
 }
+

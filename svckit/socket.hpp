@@ -1,7 +1,7 @@
 #pragma once
 
-#include <sys/uio.h>    // For iovec
-#include <sys/socket.h> // For socket functions
+#include <sys/uio.h>
+#include <sys/socket.h>
 #include <chrono>
 #include <vector>
 #include <memory>
@@ -19,18 +19,18 @@ public:
     ~Socket();
 
     // Send and receive methods
-    ssize_t send(int fd, const void* buffer, size_t length);
-    ssize_t send(int fd, const void* buffer, size_t length, std::chrono::milliseconds timeout);
-    ssize_t sendn(int fd, const void* buffer, size_t n);
-    ssize_t sendn(int fd, const void* buffer, size_t n, std::chrono::milliseconds timeout);
+    ssize_t send(int fd, const std::vector<char>& buffer);
+    ssize_t send(int fd, const std::vector<char>& buffer, std::chrono::milliseconds timeout);
+    ssize_t sendn(int fd, const std::vector<char>& buffer, size_t n);
+    ssize_t sendn(int fd, const std::vector<char>& buffer, size_t n, std::chrono::milliseconds timeout);
 
     ssize_t sendv(int fd, const struct iovec* vector_buf, int n);
     ssize_t sendv(int fd, const struct iovec* vector_buf, int n, std::chrono::milliseconds timeout);
 
-    ssize_t recv(int fd, void* buffer, size_t length);
-    ssize_t recv(int fd, void* buffer, size_t length, std::chrono::milliseconds timeout);
-    ssize_t recvn(int fd, void* buffer, size_t n);
-    ssize_t recvn(int fd, void* buffer, size_t n, std::chrono::milliseconds timeout);
+    ssize_t recv(int fd, std::vector<char>& buffer);
+    ssize_t recv(int fd, std::vector<char>& buffer, std::chrono::milliseconds timeout);
+    ssize_t recvn(int fd, std::vector<char>& buffer, size_t n);
+    ssize_t recvn(int fd, std::vector<char>& buffer, size_t n, std::chrono::milliseconds timeout);
 
     ssize_t recv_vec(int fd, struct iovec* vector_buf, int n);
     ssize_t recv_vec(int fd, struct iovec* vector_buf, int n, std::chrono::milliseconds timeout);
@@ -39,9 +39,7 @@ public:
     std::vector<std::shared_ptr<struct iovec>>& get_iovec_vector();
     const std::vector<std::shared_ptr<struct iovec>>& get_iovec_vector() const;
 
-    
 private:
     int socket_fd_;
-    // A vector of shared pointers to iovec
     std::vector<std::shared_ptr<struct iovec>> iovec_vector_;
 };

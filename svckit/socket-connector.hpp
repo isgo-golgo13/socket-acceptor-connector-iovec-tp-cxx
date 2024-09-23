@@ -16,9 +16,9 @@ public:
 
     void connect();
     std::unique_ptr<Socket> getSocket();
-    void sendData(const void* buffer, size_t length);
+    void sendData(const std::vector<char>& buffer);
     void sendDataVec(std::vector<std::shared_ptr<struct iovec>>& iovec_vector);
-
+ 
 private:
     int clientSocket_;
     SocketAddr serverAddr_;
