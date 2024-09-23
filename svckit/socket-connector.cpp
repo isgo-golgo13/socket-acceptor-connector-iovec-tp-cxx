@@ -27,7 +27,6 @@ std::unique_ptr<Socket> SocketConnector::getSocket() {
     return std::move(socket_);
 }
 
-
 void SocketConnector::sendData(const void* buffer, size_t length) {
     socket_->send(clientSocket_, buffer, length);
 }
