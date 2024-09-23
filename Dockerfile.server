@@ -1,0 +1,21 @@
+# Stage 1: Build the server application
+FROM gcc:11.3.0 as builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN apt-get update && apt-get install -y cmake
+RUN cmake . && make -j$(nproc) server
+
+# Stage 2: Final image (rootless)
+FROM debian:buster-slim
+
+RUN useradd -ms /bin/bash nonroot
+USER nonroot
+
+WORKDIR /app
+
+COPY --from=builder /app/server/server /usr/local/bin/server
+
+CMD ["server"]

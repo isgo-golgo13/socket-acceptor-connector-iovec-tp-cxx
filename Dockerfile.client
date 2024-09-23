@@ -1,0 +1,21 @@
+# Stage 1: Build the client application
+FROM gcc:11.3.0 as builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN apt-get update && apt-get install -y cmake
+RUN cmake . && make -j$(nproc) client
+
+# Stage 2: Final image (rootless)
+FROM debian:buster-slim
+
+RUN useradd -ms /bin/bash nonroot
+USER nonroot
+
+WORKDIR /app
+
+COPY --from=builder /app/client/client /usr/local/bin/client
+
+CMD ["client"]

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: thread_pool_server
+    ports:
+      - "8080:8080"  # Expose server port
+    networks:
+      - thread_pool_network
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: thread_pool_client
+    depends_on:
+      - server  # Ensure the server starts before the client
+    networks:
+      - thread_pool_network
+    environment:
+      SERVER_HOST: "server"  # The server's hostname
+      SERVER_PORT: "8080"    # Port to connect to
+
+networks:
+  thread_pool_network:
+    driver: bridge
