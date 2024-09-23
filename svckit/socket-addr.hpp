@@ -6,6 +6,7 @@
 class SocketAddr {
 public:
     SocketAddr() = default;
+    // SocketAddr(const sockaddr_in& addr);
     SocketAddr(const std::string& ip, int port);
     SocketAddr(const SocketAddr& other) = default;
     SocketAddr(SocketAddr&& other) noexcept = default;
